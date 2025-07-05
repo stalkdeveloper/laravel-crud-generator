@@ -1,0 +1,152 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response as IlluminateResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
+
+/**
+ * Base API Controller for all API endpoints.
+ * 
+ * Provides standardized JSON responses and error handling.
+ */
+class ApiBaseController extends Controller
+{
+    /**
+     * Default HTTP status code.
+     *
+     * @var int
+     */
+    protected int $statusCode = IlluminateResponse::HTTP_OK;
+
+    /**
+     * Get the current status code.
+     *
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * Set the status code for the response.
+     *
+     * @param int $statusCode
+     * @return $this
+     */
+    public function setStatusCode(int $statusCode): self
+    {
+        $this->statusCode = $statusCode;
+        return $this;
+    }
+
+    /**
+     * Respond with JSON data.
+     *
+     * @param mixed $data
+     * @param array $headers
+     * @return JsonResponse
+     */
+    public function respond($data, array $headers = []): JsonResponse
+    {
+        return response()->json($data, $this->getStatusCode(), $headers);
+    }
+
+    /**
+     * Respond with a validation error.
+     *
+     * @param string $message
+     * @param array $errors
+     * @return JsonResponse
+     */
+    public function respondValidationError(string $message, array $errors = []): JsonResponse
+    {
+        return $this->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->respondWithError($message, $errors);
+    }
+
+    /**
+     * Respond with a created resource.
+     *
+     * @param mixed $data
+     * @return JsonResponse
+     */
+    public function respondCreated($data): JsonResponse
+    {
+        return $this->setStatusCode(Response::HTTP_CREATED)
+            ->respond([
+                'status' => true,
+                'status_code' => Response::HTTP_CREATED,
+                'data' => $data,
+            ]);
+    }
+
+    /**
+     * Respond with a successful resource.
+     *
+     * @param mixed $data
+     * @return JsonResponse
+     */
+    public function respondOk($data): JsonResponse
+    {
+        return $this->setStatusCode(Response::HTTP_OK)
+            ->respond([
+                'status' => true,
+                'status_code' => Response::HTTP_OK,
+                'data' => $data,
+            ]);
+    }
+
+    /**
+     * Respond with an error message and optional errors array.
+     *
+     * @param string $message
+     * @param array $errors
+     * @param \Exception|null $exception
+     * @return JsonResponse
+     */
+    public function respondWithError(string $message, array $errors = [], \Exception $exception = null): JsonResponse
+    {
+        if ($exception) {
+            Log::error($message, [
+                'exception' => $exception,
+                'trace' => $exception->getTraceAsString(),
+            ]);
+        }
+
+        return $this->respond([
+            'status' => false,
+            'status_code' => $this->getStatusCode(),
+            'error' => [
+                'message' => $message,
+                'details' => $errors,
+            ],
+        ]);
+    }
+
+    /**
+     * Respond with a 404 not found error.
+     *
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function respondNotFound(string $message = 'Resource not found.'): JsonResponse
+    {
+        return $this->setStatusCode(Response::HTTP_NOT_FOUND)
+            ->respondWithError($message);
+    }
+
+    /**
+     * Respond with no content (204).
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function respondNoContent()
+    {
+        return response()->noContent();
+    }
+}

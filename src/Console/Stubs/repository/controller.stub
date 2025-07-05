@@ -1,0 +1,126 @@
+<?php
+
+namespace {{namespace}};
+
+use {{interfaceNamespace}}\{{model}}Interface;
+use {{requestNamespace}}\{{model}}Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+class {{model}}Controller extends Controller
+{
+    /**
+     * @var {{model}}Interface
+     */
+    protected $repository;
+
+    /**
+     * {{model}}Controller constructor.
+     *
+     * @param  {{model}}Interface  $repository
+     */
+    public function __construct({{model}}Interface $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        try {
+            ${{modelPluralVariable}} = $this->repository->all();
+            return view('{{modelSnakePlural}}.index', compact('{{modelPluralVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        try {
+            return view('{{modelSnakePlural}}.create');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store({{model}}Request $request)
+    {
+        try {
+            $this->repository->create($request->validated());
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} created successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        try {
+            ${{modelVariable}} = $this->repository->find($id);
+            return view('{{modelSnakePlural}}.show', compact('{{modelVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        try {
+            ${{modelVariable}} = $this->repository->find($id);
+            return view('{{modelSnakePlural}}.edit', compact('{{modelVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update({{model}}Request $request, $id)
+    {
+        try {
+            $this->repository->update($id, $request->validated());
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} updated successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        try {
+            $this->repository->delete($id);
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} deleted successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage().' '.$e->getFile().' '.$e->getCode().' '.$e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+}

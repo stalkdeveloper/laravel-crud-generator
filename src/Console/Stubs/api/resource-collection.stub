@@ -1,0 +1,23 @@
+<?php
+
+namespace {{resourceNamespace}};
+
+use Illuminate\Http\Resources\Json\ResourceCollection;
+
+class {{model}}Collection extends ResourceCollection
+{
+    public function toArray($request)
+    {
+        return [
+            'data' => $this->collection,
+            'links' => [
+                'self' => url()->current(),
+            ],
+            'meta' => [
+                'total' => $this->total(),
+                'per_page' => $this->perPage(),
+                'current_page' => $this->currentPage(),
+            ],
+        ];
+    }
+}

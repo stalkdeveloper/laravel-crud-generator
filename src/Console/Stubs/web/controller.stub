@@ -1,0 +1,88 @@
+<?php
+
+namespace {{namespace}};
+
+use {{modelNamespace}}\{{model}};
+use {{requestNamespace}}\{{model}}Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+class {{model}}Controller extends Controller
+{
+    public function index()
+    {
+        try {
+            ${{modelPluralVariable}} = {{model}}::paginate();
+            return view('{{modelSnakePlural}}.index', compact('{{modelPluralVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function create()
+    {
+        try {
+            return view('{{modelSnakePlural}}.create');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function store({{model}}Request $request)
+    {
+        try {
+            {{model}}::create($request->validated());
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} created successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function show({{model}} ${{modelVariable}})
+    {
+        try {
+            return view('{{modelSnakePlural}}.show', compact('{{modelVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function edit({{model}} ${{modelVariable}})
+    {
+        try {
+            return view('{{modelSnakePlural}}.edit', compact('{{modelVariable}}'));
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function update({{model}}Request $request, {{model}} ${{modelVariable}})
+    {
+        try {
+            ${{modelVariable}}->update($request->validated());
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} updated successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+
+    public function destroy({{model}} ${{modelVariable}})
+    {
+        try {
+            ${{modelVariable}}->delete();
+            return redirect()->route('{{modelSnakePlural}}.index')
+                ->with('success', '{{model}} deleted successfully.');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getCode() . ' ' . $e->getLine());
+            return back()->with('error', 'Oops! Something went wrong. Please try again later.');
+        }
+    }
+}

@@ -1,0 +1,17 @@
+<?php
+
+namespace {{resourceNamespace}};
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class {{model}}Resource extends JsonResource
+{
+    public function toArray($request)
+    {
+        return [
+            'id'   => $this->id,
+            'name' => $this->name,
+            // Add more fields as needed
+        ];
+    }
+}

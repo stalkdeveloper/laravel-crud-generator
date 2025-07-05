@@ -1,0 +1,11 @@
+<?php
+
+namespace {{modelNamespace}};
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{model}} extends Model
+{
+    protected $fillable = ['name']; // Customize as needed
+    protected $table = '{{modelSnakePlural}}';
+}

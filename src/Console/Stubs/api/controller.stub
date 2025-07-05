@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use {{modelNamespace}}\{{model}};
+use {{requestNamespace}}\{{model}}Request;
+use {{resourceNamespace}}\{{model}}Resource;
+use {{resourceNamespace}}\{{model}}Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+/**
+ * API Controller for {{model}} resource.
+ */
+class {{model}}Controller extends ApiBaseController
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        try {
+            $data = {{model}}::paginate();
+            return $this->respondOk(new {{model}}Collection($data));
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch {{modelPlural}}: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return $this->respondWithError('Failed to fetch {{modelPlural}}.', [], $e);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  {{model}}Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store({{model}}Request $request)
+    {
+        try {
+            ${{modelVariable}} = {{model}}::create($request->validated());
+            return $this->respondCreated(new {{model}}Resource(${{modelVariable}}));
+        } catch (\Exception $e) {
+            Log::error('Failed to create {{model}}: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return $this->respondWithError('Failed to create {{model}}.', [], $e);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  {{model}}  ${{modelVariable}}
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show({{model}} ${{modelVariable}})
+    {
+        try {
+            return $this->respondOk(new {{model}}Resource(${{modelVariable}}));
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch {{model}}: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return $this->respondWithError('Failed to fetch {{model}}.', [], $e);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  {{model}}Request  $request
+     * @param  {{model}}  ${{modelVariable}}
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update({{model}}Request $request, {{model}} ${{modelVariable}})
+    {
+        try {
+            ${{modelVariable}}->update($request->validated());
+            return $this->respondOk(new {{model}}Resource(${{modelVariable}}));
+        } catch (\Exception $e) {
+            Log::error('Failed to update {{model}}: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return $this->respondWithError('Failed to update {{model}}.', [], $e);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  {{model}}  ${{modelVariable}}
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function destroy({{model}} ${{modelVariable}})
+    {
+        try {
+            ${{modelVariable}}->delete();
+            return $this->respondNoContent();
+        } catch (\Exception $e) {
+            Log::error('Failed to delete {{model}}: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return $this->respondWithError('Failed to delete {{model}}.', [], $e);
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "name": "sunny/laravel-crud-generator",
+    "description": "Laravel CRUD generator package for API and Web with customizable Artisan command and built-in support for models, controllers, validation, API resources, Yajra datatables, and Blade views.",
+    "type": "library",
+    "require": {
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "StalkArtisan\\LaravelCrudGenerator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sunny Kumar",
+            "email": "sunnyk.kongu@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "StalkArtisan\\LaravelCrudGenerator\\Providers\\CrudGeneratorServiceProvider"
+            ],
+            "aliases": {
+                "CrudGenerator": "StalkArtisan\\LaravelCrudGenerator\\Facades\\CrudGenerator"
+            }
+        }
+    }
+}
