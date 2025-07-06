@@ -10,7 +10,7 @@ Thank you for your interest in contributing! We welcome all kinds of contributio
 2. **Clone your fork**
 
     ```bash
-    git clone https://github.com/your-username/laravel-crud-generator.git
+    git clone https://github.com/stalkdeveloper/laravel-crud-generator.git
     cd laravel-crud-generator
     ```
 
