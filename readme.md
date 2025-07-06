@@ -15,6 +15,10 @@ A powerful CRUD generator for Laravel that supports API, Web, and Repository pat
 - PSR-4 structure
 - Laravel 9+ compatible
 
+## Requirements
+    Laravel >= 9.0
+    PHP >= 8.0.0
+
 ## 🚀 Installation
 
 1. **Install via Composer**
