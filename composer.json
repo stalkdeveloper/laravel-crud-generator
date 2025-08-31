@@ -1,6 +1,6 @@
 {
     "name": "stalkdeveloper/laravel-crud-generator",
-    "description": "Laravel CRUD generator package for API and Web with customizable Artisan command and built-in support for models, controllers, validation, API resources, Yajra datatables, and Blade views.",
+    "description": "Laravel CRUD generator package for API and Web with customizable Artisan command and built-in support for models, controllers, form validation, API resources and Blade views.",
     "type": "library",
     "require": {
         "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0"
